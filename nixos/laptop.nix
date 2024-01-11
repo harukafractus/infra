@@ -167,7 +167,7 @@
 
   system = {
     stateVersion = "unstable";
-    # includeBuildDependencies = true;
+    includeBuildDependencies = true;
     # See https://linus.schreibt.jetzt/posts/include-build-dependencies.html#fn1
   };
 }
