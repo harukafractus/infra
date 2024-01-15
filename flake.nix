@@ -36,6 +36,8 @@
         modules = [
           {networking.hostName = "haruka-laptop";}
           ./nixos/laptop.nix
+          ./nixos/hyprland.nix
+
         ];
       };
     };
