@@ -6,7 +6,7 @@
     ../hardware-configuration.nix
   ];
 
-  virtualisation.waydroid.enable = true;
+  #virtualisation.waydroid.enable = true;
 
   boot = {
     supportedFilesystems = [ "ntfs" ];
@@ -88,13 +88,11 @@
   environment = {
     defaultPackages = lib.mkForce [];
     systemPackages = with pkgs; [
-      python311Packages.python
       smartmontools
       gparted
       jwhois
       pciutils
       usbutils
-      wget
       fcp
       dogdns
       bat
