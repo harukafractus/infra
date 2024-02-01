@@ -25,6 +25,7 @@
       "org.gnome.Mines"
       "com.valvesoftware.Steam"
       "org.gnome.Calendar"
+      "com.usebottles.bottles"
     ];
   };
 

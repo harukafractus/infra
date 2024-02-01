@@ -6,7 +6,9 @@
     excludePackages = [ pkgs.xterm ];
     displayManager = {
       gdm.enable = true;
-      sessionPackages = [ pkgs.gnome.gnome-session.sessions ];
+      sessionPackages = with pkgs; [
+        pkgs.gnome.gnome-session.sessions
+      ];
     };
   };
 

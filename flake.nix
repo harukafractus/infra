@@ -6,8 +6,8 @@
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Surface 6.6.10
-    hardware.url = "github:nixos/nixos-hardware/b34a6075e9e298c4124e35c3ccaf2210c1f3a43b";
+    # Surface 6.6.13
+    hardware.url = "github:nixos/nixos-hardware/abff72bb97ac85cdd192f32aecbed914ead928db";
   };
 
   outputs = {
@@ -26,7 +26,7 @@
         specialArgs = { inherit inputs outputs; };
         modules = [
           {networking.hostName = "haruka-surface";}
-          #hardware.nixosModules.microsoft-surface-pro-intel
+          hardware.nixosModules.microsoft-surface-pro-intel
           ./nixos/laptop.nix
         ];
       };
