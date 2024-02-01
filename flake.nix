@@ -26,7 +26,7 @@
         specialArgs = { inherit inputs outputs; };
         modules = [
           {networking.hostName = "haruka-surface";}
-          hardware.nixosModules.microsoft-surface-pro-intel
+          #hardware.nixosModules.microsoft-surface-pro-intel
           ./nixos/laptop.nix
         ];
       };

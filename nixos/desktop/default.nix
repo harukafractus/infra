@@ -21,7 +21,7 @@
       enabled = "ibus";
       ibus.engines = with pkgs.ibus-engines; [
         rime
-        #mozc 
+        (pkgs.callPackage ./mozc.nix {})
       ];
     };
   };
@@ -30,7 +30,7 @@
   fonts = {
     fontDir.enable = true;
     packages = with pkgs; [
-      source-sans
+      noto-fonts
       (callPackage ./gothic_nguyen.nix {})  # Sans for Han Nom
       source-han-sans
       source-han-mono

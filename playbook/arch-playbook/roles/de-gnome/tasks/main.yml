@@ -1,0 +1,86 @@
+---
+- name: Install GNOME
+  become: true
+  community.general.pacman:
+    name:
+      - gdm
+      - gnome-backgrounds
+      - gnome-color-manager
+      - gnome-control-center
+      - gnome-keyring
+      - gnome-menus
+      - gnome-remote-desktop
+      - gnome-session
+      - gnome-settings-daemon
+      - gnome-shell
+      - gnome-shell-extensions
+      - gnome-user-docs
+      - gnome-user-share
+      - grilo-plugins
+      - gvfs
+      - gvfs-afc
+      - gvfs-gphoto2
+      - gvfs-mtp
+      - gvfs-nfs
+      - gvfs-smb
+      - malcontent
+      - orca
+      - rygel
+      - tracker3-miners
+      - xdg-desktop-portal-gnome
+      - xdg-user-dirs-gtk
+      - yelp
+    state: present
+    update_cache: true
+
+- name: Recycle packages
+  become: true
+  community.general.pacman:
+    name:
+      - git
+      - baobab
+      - cheese
+      - eog
+      - epiphany
+      - evince
+      - gnome-calculator
+      - gnome-calendar
+      - gnome-characters
+      - gnome-clocks
+      - gnome-connections
+      - gnome-console
+      - gnome-contacts
+      - gnome-disk-utility
+      - gnome-font-viewer
+      - gnome-logs
+      - gnome-maps
+      - gnome-music
+      - gnome-photos
+      - gnome-software
+      - gnome-system-monitor
+      - gnome-text-editor
+      - gnome-tour
+      - gnome-weather
+      - gvfs-goa
+      - gvfs-google
+      - simple-scan
+      - sushi
+      - totem
+      - gnome-tweaks
+    state: absent
+
+- name: Install Flatpak apps
+  become: false
+  community.general.flatpak:
+    name: 
+      - com.discordapp.Discord
+      - info.smplayer.SMPlayer
+      - org.qbittorrent.qBittorrent
+      - org.telegram.desktop
+
+- name: Enable GDM
+  become: true
+  ansible.builtin.systemd:
+    name: gdm
+    enabled: yes
+    masked: no

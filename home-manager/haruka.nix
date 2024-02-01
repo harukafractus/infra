@@ -24,6 +24,7 @@
       "com.vscodium.codium"
       "org.gnome.Mines"
       "com.valvesoftware.Steam"
+      "org.gnome.Calendar"
     ];
   };
 
@@ -31,7 +32,6 @@
     enable = true;
      userName = "harukafractus";
      userEmail = "106440141+harukafractus@users.noreply.github.com";
-     signing.signByDefault = true;
   };
 
   programs.home-manager = {
