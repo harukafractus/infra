@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable/";
+    nur.url = github:nix-community/NUR;
     flatpak.url = "github:gmodena/nix-flatpak";
 
     home-manager.url = "github:nix-community/home-manager/master";
@@ -16,6 +17,7 @@
     home-manager,
     flatpak,
     hardware,
+    nur,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -25,6 +27,7 @@
       "haruka-surface" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs outputs; };
         modules = [
+          { nixpkgs.overlays = [ nur.overlay ]; }
           {networking.hostName = "haruka-surface";}
           hardware.nixosModules.microsoft-surface-pro-intel
           ./nixos/laptop.nix
