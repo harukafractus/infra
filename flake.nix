@@ -1,59 +1,24 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable/";
-    nur.url = github:nix-community/NUR;
-    flatpak.url = "github:gmodena/nix-flatpak";
-
-    home-manager.url = "github:nix-community/home-manager/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Surface 6.6.13
-    hardware.url = "github:nixos/nixos-hardware/abff72bb97ac85cdd192f32aecbed914ead928db";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    flatpak,
-    hardware,
-    nur,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
-  in {
-    nixosConfigurations = {
-      # Surface Pro
-      "haruka-surface" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs outputs; };
-        modules = [
-          { nixpkgs.overlays = [ nur.overlay ]; }
-          {networking.hostName = "haruka-surface";}
-          hardware.nixosModules.microsoft-surface-pro-intel
-          ./nixos/laptop.nix
-        ];
-      };
-      # Generic Laptop
-      "haruka-laptop" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs outputs; };
-        modules = [
-          {networking.hostName = "haruka-laptop";}
-          ./nixos/laptop.nix
-          ./nixos/hyprland.nix
-
-        ];
-      };
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
+  {
+    darwinConfigurations."harukas-MacBook-Air" = nix-darwin.lib.darwinSystem {
+      modules = [
+        {nixpkgs.hostPlatform = "aarch64-darwin"; }
+        home-manager.darwinModules.home-manager
+        {
+          home-manager.users.haruka = import ./home.nix/haruka.nix;
+        }
+        ./configuration.nix/darwin.nix
+      ];
     };
-
-    homeConfigurations = {
-      "haruka" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          flatpak.homeManagerModules.nix-flatpak
-          ./home-manager/haruka.nix
-        ];
-      };
-    };
+    darwinPackages = self.darwinConfigurations."harukas-MacBook-Air".pkgs;
   };
 }

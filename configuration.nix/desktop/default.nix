@@ -3,7 +3,6 @@
 {
   imports = [ ./gnome.nix ];
 
-  # Enable audio: PipeWire
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -24,20 +23,6 @@
         mozc
       ];
     };
-  };
-
-  # Add font support: Noto Sans CJK
-  fonts = {
-    fontDir.enable = true;
-    packages = with pkgs; [
-      noto-fonts
-      nur.repos.harukafractus.gothic-nguyen  # Sans for Han Nom
-      source-han-sans
-      source-han-mono
-      source-han-serif
-      source-han-code-jp
-      nerdfonts
-    ];
   };
 
   # Fix Flatpak and Qt system fonts

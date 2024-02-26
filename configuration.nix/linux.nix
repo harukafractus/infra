@@ -1,6 +1,4 @@
-{ inputs, lib, config, pkgs, ... }:
-
-{
+{ inputs, lib, config, pkgs, ... }: {
   imports = [
     ./desktop
     ../hardware-configuration.nix
@@ -37,15 +35,7 @@
   programs = {
     less.enable = lib.mkForce false;
     adb.enable = true;
-
-    zsh = {
-      enable = true;
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-      ohMyZsh.enable = true;
-      ohMyZsh.theme = "agnoster";
-    };
-    
+    zsh.enable = true;
     wireshark = {
       enable = true;
       package = pkgs.wireshark;
@@ -62,15 +52,6 @@
     extraHosts = ''
       ::1 doubleclick.net
     '';
-  };
-
-  documentation = {
-    dev.enable = false;
-    doc.enable = false;
-    enable = false;
-    info.enable = false;
-    man.enable = false;
-    nixos.enable = false;
   };
 
   nix = {
@@ -102,15 +83,16 @@
     systemPackages = with pkgs; [
       smartmontools
       gparted
-      jwhois
       pciutils
       usbutils
-      fcp
-      dogdns
       bat
       unar
-      tealdeer
     ];
+    shellAliases = {
+      offline-rebuild = "sudo nixos-rebuild switch --option substitute false";
+      gen = "sudo nixos-rebuild switch";
+      update = "sudo nix flake update --flake /etc/nixos";
+    };
   };
 
   users = {
@@ -124,47 +106,7 @@
         "adbusers"
         "wireshark"
       ];
-      packages = with pkgs; [
-        fastfetch
-        fortune
-      ];
     };
-  };
-
-  environment = {
-    shellAliases = {
-      ls = "ls -1lh --color=tty";
-      cp = "fcp";
-      dig = "dog";
-      less = "bat";
-      gc = "sudo nix-collect-garbage -d; offline-rebuild";
-      gen = "sudo nix flake update --flake /etc/nixos; sudo nixos-rebuild switch";
-      hmgen = "nix run home-manager/master -- init; home-manager switch --flake /etc/nixos";
-      hmgc = "home-manager expire-generations -0days";
-      offline-rebuild = "sudo nixos-rebuild switch --option substitute false";
-    };
-    shellInit = "
-      ZSH_COMPDUMP=\"\$HOME/.cache/zsh/zcompcache\";
-      
-      function server() {
-        local port=\"\${1:-5000}\"
-        local is_sudo=\"\"
-        if [[ \"\$2\" == \"--sudo\" ]]; then
-          is_sudo=\"sudo\"
-        fi
-        echo \"Usage: server [port] [--sudo]\"
-        \$is_sudo nix-shell -p python311Packages.python --command \"python -m http.server \$port\"
-      };
-
-      function python3-shell() {
-        echo \"Usage: python3-shell [module1] [module2] ...\"
-        nix-shell --pure -p \"pkgs.python311Packages.python.withPackages (pkgs: with pkgs; [ \$@ ])\" 
-      };
-
-      function codium() {
-        (flatpak run com.vscodium.codium $*)
-      };
-    ";
   };
 
   security.sudo.execWheelOnly = true;
