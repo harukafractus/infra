@@ -9,9 +9,11 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
   {
-    darwinConfigurations."harukas-MacBook-Air" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."haruka-mac" = nix-darwin.lib.darwinSystem {
       modules = [
-        {nixpkgs.hostPlatform = "aarch64-darwin"; }
+        {nixpkgs.hostPlatform = "aarch64-darwin";
+         networking.hostName = "haruka-mac";
+        }
         home-manager.darwinModules.home-manager
         {
           home-manager.users.haruka = import ./home.nix/haruka.nix;
@@ -19,6 +21,6 @@
         ./configuration.nix/darwin.nix
       ];
     };
-    darwinPackages = self.darwinConfigurations."harukas-MacBook-Air".pkgs;
+    darwinPackages = self.darwinConfigurations."haruka-mac".pkgs;
   };
 }

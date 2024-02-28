@@ -16,18 +16,6 @@
     util-linux
   ];
 
-  fonts = {
-    fontDir.enable = true;
-    fonts = with pkgs; [
-      noto-fonts
-      source-han-sans
-      source-han-mono
-      source-han-serif
-      source-han-code-jp
-      nerdfonts
-    ];
-  };
-
   users.users.haruka = {
     name = "haruka";
     home = "/Users/haruka";

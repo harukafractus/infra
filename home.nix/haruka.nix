@@ -7,7 +7,6 @@ let
     qbittorrent
     vscodium
     telegram-desktop
-    iterm2
   ];
 in {
   home = {
