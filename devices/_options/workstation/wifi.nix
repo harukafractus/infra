@@ -5,19 +5,24 @@ let
 in {
   options.workstation.wifi = {
     provider = mkOption {
-      type = types.str;
-      default = "iwd";
+      type    = types.enum [ "wpa_supplicant" "iwd" ];
+      default = "wpa_supplicant";
     };
   };
 
   config = {
-    networking = {
-      dhcpcd.enable = cfg.provider == "wpa_supplicant";
-      wireless.enable = cfg.provider == "wpa_supplicant";
+    # Enable NetworkManager & wpa
+    networking = if cfg.provider == "wpa_supplicant" then {
+      networkmanager.enable = true;
+    } else {
+      networkmanager.wifi.backend = "iwd";
+      # Disable wpa_supplicant to avoid conflict
+      wireless.enable = true;
+      dhcpcd.enable = false;
 
-      # Enable iwd ...for iwctl and its straightforward config
+      # Enable iwctl
       wireless.iwd = {
-        enable = cfg.provider == "iwd";
+        enable = true;
         settings = {
           General = {
             EnableNetworkConfiguration = true;
@@ -29,12 +34,6 @@ in {
             EnableIPv6 = false;
           };
         };
-      };
-
-      # Use NetworkManager as the frontend
-      networkmanager = {
-        enable = cfg.provider != "none";
-        wifi.backend = cfg.provider;
       };
     };
   };
