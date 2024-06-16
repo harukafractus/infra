@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+
+  imports = [ ../_options ];
+
   networking.hostName = "walled-garden";
   nixpkgs.hostPlatform = "aarch64-darwin";
   services.nix-daemon.enable = true;
